@@ -12,11 +12,6 @@ class SMGuard implements Guard
 {
     use GuardHelpers;
 
-    /**
-     * @var UserProvider
-     */
-    private $provider;
-
 
     public function __construct(SMUserProvider $provider)
     {
