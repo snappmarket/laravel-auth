@@ -1,0 +1,26 @@
+{
+  "name": "snappmarket/laravel-auth",
+  "authors": [
+    {
+      "name": "Hamid Zamani",
+      "email": "hamidzamani.ce@gmail.com"
+    }
+  ],
+  "require": {
+    "snappmarket/auth-communicator": "dev-master",
+    "laravel/framework": ">=5.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "SnappMarket\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": false,
+  "repositories":[
+    {
+      "type": "vcs",
+      "url": "git@github.com:snappmarket/auth-communicator.git"
+    }
+  ]
+}
