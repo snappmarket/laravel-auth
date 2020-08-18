@@ -29,7 +29,8 @@ class SMAuthServiceProvider extends ServiceProvider
         $this->app->bind(Communicator::class, function () {
             return new Communicator(
                 $this->app['config']->get('auth-communication.baseUrl'),
-                ['client' => $this->app['config']->get('auth-communication.client')]
+                ['client' => $this->app['config']->get('auth-communication.client')],
+                app('log')
             );
         });
     }
