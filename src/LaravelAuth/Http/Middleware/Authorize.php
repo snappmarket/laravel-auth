@@ -1,10 +1,12 @@
 <?php
 
+namespace SnappMarket\LaravelAuth\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use SnappMarket\LaravelAuth\Gate;
 
-class authorize
+class Authorize
 {
 
     /**
@@ -17,14 +19,16 @@ class authorize
 
         $this->gate = $gate;
     }
+
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @param Closure $next
      *
      *
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function handle($request, Closure $next, $ability)
     {
