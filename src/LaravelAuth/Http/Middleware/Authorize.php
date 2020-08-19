@@ -4,17 +4,17 @@ namespace SnappMarket\LaravelAuth\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use SnappMarket\LaravelAuth\Gate;
+use SnappMarket\LaravelAuth\SMGate;
 
 class Authorize
 {
 
     /**
-     * @var Gate
+     * @var SMGate
      */
     private $gate;
 
-    public function __construct(Gate $gate)
+    public function __construct(SMGate $gate)
     {
 
         $this->gate = $gate;
@@ -27,6 +27,7 @@ class Authorize
      * @param Closure $next
      *
      *
+     * @param $ability
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

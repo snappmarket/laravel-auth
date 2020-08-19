@@ -9,7 +9,7 @@ use Illuminate\Contracts\Container\Container;
 use SnappMarket\Auth\Communicator;
 use SnappMarket\Auth\DataContracts\HasPermissionDto;
 
-class Gate extends \Illuminate\Auth\Access\Gate
+class SMGate extends \Illuminate\Auth\Access\Gate
 {
     /**
      * @var Communicator
