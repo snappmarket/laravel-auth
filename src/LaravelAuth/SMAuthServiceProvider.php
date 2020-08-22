@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use SnappMarket\Auth\Communicator;
+use SnappMarket\LaravelAuth\Http\Middleware\Authenticate;
 use SnappMarket\LaravelAuth\Http\Middleware\CanAll;
 
 class SMAuthServiceProvider extends ServiceProvider
@@ -24,7 +25,7 @@ class SMAuthServiceProvider extends ServiceProvider
         });
 
         Auth::extend('sm-auth', function ($app, $name, array $config) {
-            return new SMGuard($app->make(SMUserProvider::class));
+            return $app->make(SMGuard::class);
         });
 
         $this->publishes([
@@ -38,10 +39,12 @@ class SMAuthServiceProvider extends ServiceProvider
                 app('log')
             );
         });
-        
+
         $this->registerAccessGate();
 
+        $this->app['router']->aliasMiddleware('sm-auth', Authenticate::class);
         $this->app['router']->aliasMiddleware('sm-auth-can', CanAll::class);
+
     }
 
     /**

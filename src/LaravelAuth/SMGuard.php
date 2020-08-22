@@ -7,15 +7,30 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use SnappMarket\Auth\Communicator;
 
 class SMGuard implements Guard
 {
     use GuardHelpers;
 
+    /**
+     * @var Communicator
+     */
+    private $communicator;
 
-    public function __construct(SMUserProvider $provider)
+    /**
+     * The request instance.
+     *
+     * @var \Illuminate\Http\Request
+     */
+    protected $request;
+
+
+    public function __construct(SMUserProvider $provider, Communicator $communicator, Request $request)
     {
-        $this->provider = $provider;
+        $this->provider     = $provider;
+        $this->communicator = $communicator;
+        $this->request      = $request;
     }
 
     public function validate(array $credentials = [])
@@ -43,6 +58,16 @@ class SMGuard implements Guard
 
     public function user()
     {
+        if ($this->user === null && $this->request->bearerToken()) {
+            $this->user = $this->provider->retrieveByToken(null, $this->request->bearerToken());
+        }
+
         return $this->user;
+    }
+
+
+    public function logout()
+    {
+        $this->communicator->logout($this->user()->getToken());
     }
 }

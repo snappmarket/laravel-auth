@@ -30,7 +30,14 @@ class SMUserProvider implements UserProvider
 
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: Implement retrieveByToken() method.
+        $response = $this->communicator->authenticate($token);
+
+        $user = new SMUser();
+        $user->setId($response->getUserId());
+        $user->setToken($response->getToken());
+        $user->setAccessInfo($response->getAccessInfo());
+
+        return $user;
     }
 
     public function updateRememberToken(Authenticatable $user, $token)

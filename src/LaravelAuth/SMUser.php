@@ -3,6 +3,7 @@
 namespace SnappMarket\LaravelAuth\DataContracts;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use SnappMarket\Auth\Responses\Parts\Access;
 
 class SMUser implements Authenticatable
 {
@@ -11,6 +12,12 @@ class SMUser implements Authenticatable
 
     /** @var string */
     private $token;
+
+
+    /**
+     * @var array|Access
+     */
+    protected $accessInfo = [];
 
     /**
      * @param int $id
@@ -64,5 +71,25 @@ class SMUser implements Authenticatable
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+
+
+    /**
+     * @return array|Access
+     */
+    public function getAccessInfo()
+    {
+        return $this->accessInfo;
+    }
+
+
+
+    /**
+     * @param array|Access $accessInfo
+     */
+    public function setAccessInfo($accessInfo): void
+    {
+        $this->accessInfo = $accessInfo;
     }
 }
