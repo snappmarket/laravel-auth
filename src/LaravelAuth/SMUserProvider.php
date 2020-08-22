@@ -51,11 +51,13 @@ class SMUserProvider implements UserProvider
         $loginDto->setUsername($credentials['username']);
         $loginDto->setPassword($credentials['password']);
 
-        $response = $this->communicator->loginByUsername($loginDto);
+        $loginResponse = $this->communicator->loginByUsername($loginDto);
+        $authResponse  = $this->communicator->authenticate($loginResponse->getToken());
 
         $user = new SMUser();
-        $user->setId($response->getUserId());
-        $user->setToken($response->getToken());
+        $user->setId($authResponse->getUserId());
+        $user->setToken($authResponse->getToken());
+        $user->setAccessInfo($authResponse->getAccessInfo());
 
         return $user;
     }
