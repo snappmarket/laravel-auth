@@ -7,6 +7,7 @@ namespace SnappMarket\LaravelAuth;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Container\Container;
 use SnappMarket\Auth\Communicator;
+use SnappMarket\Auth\DataContracts\HasAllPermissionsDto;
 use SnappMarket\Auth\DataContracts\HasPermissionDto;
 
 class SMGate extends \Illuminate\Auth\Access\Gate
@@ -24,17 +25,13 @@ class SMGate extends \Illuminate\Auth\Access\Gate
         $this->communicator = $communicator;
     }
 
-    public function authorize($ability, $arguments = [])
+    public function check($abilities, $arguments = [])
     {
-        $permission = new HasPermissionDto();
-        $permission->setToken($arguments['token']);
-        $permission->setPermission($arguments['permission']);
-        $permission->setConstraint($arguments['constraint']);
+        $checkDto = new HasAllPermissionsDto();
+        $checkDto->setToken($arguments['token']);
+        $checkDto->setPermissions($abilities);
+        $checkDto->setConstraints($arguments['constraints'] ?? []);
 
-        if (!$this->communicator->hasPermission($permission)) {
-            return $this->deny();
-        }
-
-        return $this->allow();
+        return $this->communicator->hasAllPermissions($checkDto);
     }
 }

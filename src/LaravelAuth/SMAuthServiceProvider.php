@@ -10,15 +10,10 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use SnappMarket\Auth\Communicator;
+use SnappMarket\LaravelAuth\Http\Middleware\CanAll;
 
 class SMAuthServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        $this->registerAuthenticator();
-        $this->registerUserResolver();
-        $this->registerAccessGate();
-    }
 
     public function boot()
     {
@@ -43,40 +38,10 @@ class SMAuthServiceProvider extends ServiceProvider
                 app('log')
             );
         });
-    }
+        
+        $this->registerAccessGate();
 
-    /**
-     * Register the authenticator services.
-     *
-     * @return void
-     */
-    protected function registerAuthenticator()
-    {
-        $this->app->singleton('auth', function ($app) {
-            // Once the authentication service has actually been requested by the developer
-            // we will set a variable in the application indicating such. This helps us
-            // know that we need to set any queued cookies in the after event later.
-            $app['auth.loaded'] = true;
-
-            return new AuthManager($app);
-        });
-
-        $this->app->singleton('auth.driver', function ($app) {
-            return $app['auth']->guard();
-        });
-    }
-
-    /**
-     * Register a resolver for the authenticated user.
-     *
-     * @return void
-     */
-    protected function registerUserResolver()
-    {
-        $this->app->bind(
-            AuthenticatableContract::class, function ($app) {
-            return call_user_func($app['auth']->userResolver());
-        });
+        $this->app['router']->aliasMiddleware('sm-auth-can', CanAll::class);
     }
 
     /**
