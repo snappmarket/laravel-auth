@@ -66,6 +66,14 @@ class SMGuard implements Guard
     }
 
 
+
+    public function refresh()
+    {
+        return $this->communicator->refresh($this->request->bearerToken());
+    }
+
+
+
     public function logout()
     {
         $this->communicator->logout($this->user()->getToken());
