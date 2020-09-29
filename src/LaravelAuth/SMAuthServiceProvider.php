@@ -34,7 +34,7 @@ class SMAuthServiceProvider extends ServiceProvider
 
         $this->app->bind(Communicator::class, function () {
             return new Communicator(
-                $this->app['config']->get('auth-communication.baseUrl'),
+                $this->getAuthCommunicationBaseUrl(),
                 ['client' => $this->app['config']->get('auth-communication.client')],
                 app('log')
             );
@@ -59,5 +59,14 @@ class SMAuthServiceProvider extends ServiceProvider
                 return call_user_func($app['auth']->userResolver());
             });
         });
+    }
+
+
+
+    protected function getAuthCommunicationBaseUrl()
+    {
+        return ($configValue = $this->app['config']->get('auth-communication.baseUrl'))
+             ??
+             ($this->app->runningInConsole() ? '' : $configValue);
     }
 }
