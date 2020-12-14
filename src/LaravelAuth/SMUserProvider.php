@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use SnappMarket\Auth\Communicator;
 use SnappMarket\Auth\DataContracts\LoginByUsernameDto;
-use SnappMarket\LaravelAuth\DataContracts\SMUser;
+use SnappMarket\LaravelAuth\SMUser;
 
 class SMUserProvider implements UserProvider
 {

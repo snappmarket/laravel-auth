@@ -1,6 +1,6 @@
 <?php
 
-namespace SnappMarket\LaravelAuth\DataContracts;
+namespace SnappMarket\LaravelAuth;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use SnappMarket\Auth\Responses\Parts\Access;
