@@ -7,7 +7,7 @@
     }
   ],
   "require": {
-    "snappmarket/auth-communicator": "dev-master",
+    "snappmarket/auth-communicator": "^1.0.0",
     "laravel/framework": ">=5.8"
   },
   "autoload": {
