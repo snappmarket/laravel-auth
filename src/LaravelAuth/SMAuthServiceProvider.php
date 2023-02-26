@@ -32,6 +32,11 @@ class SMAuthServiceProvider extends ServiceProvider
             __DIR__ . '/../config/auth-communication.php' => config_path('auth-communication.php'),
         ], 'config');
 
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/auth-communication.php',
+            'auth-communication'
+        );
+
         $this->app->bind(Communicator::class, function () {
             return new Communicator(
                 $this->getAuthCommunicationBaseUrl(),
