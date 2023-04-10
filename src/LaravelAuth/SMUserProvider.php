@@ -25,7 +25,10 @@ class SMUserProvider implements UserProvider
 
     public function retrieveById($identifier)
     {
-        // TODO: Implement retrieveById() method.
+        $user = new SMUser();
+        $user->setId($identifier);
+
+        return $user;
     }
 
     public function retrieveByToken($identifier, $token)

@@ -10,9 +10,15 @@
     "snappmarket/auth-communicator": "^1.0.0",
     "laravel/framework": ">=5.8"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "mockery/mockery": "^1.5",
+    "orchestra/testbench": "^7.6"
+  },
   "autoload": {
     "psr-4": {
-      "SnappMarket\\": "src/"
+      "SnappMarket\\": "src/",
+      "SnappMarket\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev",

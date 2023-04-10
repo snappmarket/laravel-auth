@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  main:
+    container_name: laravel_auth_package
+    build:
+      context: ./.docker
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    tty: true

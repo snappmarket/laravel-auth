@@ -25,12 +25,35 @@ class SMGuard implements Guard
      */
     protected $request;
 
+    /**
+     * retrieve Identifier on api gateway
+     *
+     * @var int|null
+     */
+    protected $gatewayIdentifier;
+
+    /**
+     * retrieve Identifier Secret Token on api gateway
+     *
+     * @var string|null
+     */
+    protected $gatewayIdentifierSecret;
+
+    /**
+     * retrieve Identifier Secret Token on configuration
+     *
+     * @var string|null
+     */
+    protected $configGatewaySecretKey;
 
     public function __construct(SMUserProvider $provider, Communicator $communicator, Request $request)
     {
-        $this->provider     = $provider;
-        $this->communicator = $communicator;
-        $this->request      = $request;
+        $this->provider      = $provider;
+        $this->communicator  = $communicator;
+        $this->request       = $request;
+        $this->gatewayIdentifier = $request->header(config('auth-communication.gateway.parameters.identifier'), null);
+        $this->gatewayIdentifierSecret = $request->header(config('auth-communication.gateway.parameters.key'), null);
+        $this->configGatewaySecretKey = config('auth-communication.gateway.secret_key', null);
     }
 
     public function validate(array $credentials = [])
@@ -58,8 +81,22 @@ class SMGuard implements Guard
 
     public function user()
     {
-        if ($this->user === null && $this->request->bearerToken()) {
-            $this->user = $this->provider->retrieveByToken(null, $this->request->bearerToken());
+        if ($this->user) {
+            return $this->user;
+        }
+
+        switch (true) {
+            case !! $this->request->bearerToken(): {
+                $this->user = $this->provider->retrieveByToken(null, $this->request->bearerToken());
+                break;
+            }
+            case
+                !! $this->gatewayIdentifier &&
+                !! $this->gatewayIdentifierSecret &&
+                $this->gatewayIdentifierSecret === $this->configGatewaySecretKey: {
+                $this->user = $this->provider->retrieveById($this->gatewayIdentifier);
+                break;
+            }
         }
 
         return $this->user;
