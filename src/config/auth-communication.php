@@ -8,6 +8,6 @@ return [
             'identifier' => 'user_id',
             'key' => 'secret-token'
         ],
-        'secret_key' => 'AAJrv%r@2iL279nYf1r&Mht5rs'
+        'secret_key' => env('SM_AUTH_SECRET_KEY')
     ]
 ];
